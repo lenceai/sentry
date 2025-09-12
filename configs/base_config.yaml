@@ -1,0 +1,53 @@
+# Base configuration for LLM training
+# Version: v1.0.0
+
+# Model configuration
+model:
+  architecture: "transformer"  # or "mamba"
+  vocab_size: 50257
+  d_model: 1024
+  n_heads: 16
+  n_layers: 24
+  d_ff: 4096
+  max_seq_length: 2048
+  dropout: 0.1
+
+# Training configuration
+training:
+  batch_size: 4  # Per GPU
+  gradient_accumulation_steps: 8
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  warmup_steps: 1000
+  max_steps: 100000
+  save_steps: 1000
+  eval_steps: 500
+  logging_steps: 100
+
+# Data configuration
+data:
+  dataset_name: "fineweb"
+  max_samples: 1000000
+  preprocessing_workers: 8
+  cache_dir: "./data/cache"
+
+# Distributed training
+distributed:
+  backend: "nccl"
+  world_size: 4  # 4 GPUs across systems
+  local_rank: 0
+  master_addr: "localhost"
+  master_port: 12355
+
+# Hardware optimization
+optimization:
+  mixed_precision: true
+  gradient_checkpointing: true
+  dataloader_num_workers: 4
+  pin_memory: true
+
+# Paths
+paths:
+  output_dir: "./models/checkpoints"
+  data_dir: "./data"
+  log_dir: "./logs"

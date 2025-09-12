@@ -1,0 +1,52 @@
+# GPU Configuration for Multi-System Training
+# Version: v1.0.0
+
+# System specifications
+systems:
+  - name: "system_1"
+    gpu: "RTX_3080_TI"
+    vram_gb: 12
+    cuda_visible_devices: "0"
+    rank: 0
+    
+  - name: "system_2" 
+    gpu: "RTX_3090"
+    vram_gb: 24
+    cuda_visible_devices: "0"
+    rank: 1
+    
+  - name: "system_3"
+    gpu: "RTX_3090" 
+    vram_gb: 24
+    cuda_visible_devices: "0"
+    rank: 2
+    
+  - name: "system_4"
+    gpu: "RTX_3090"
+    vram_gb: 24
+    cuda_visible_devices: "0"
+    rank: 3
+
+# Memory optimization per GPU type
+memory_config:
+  RTX_3080_TI:
+    max_batch_size: 2
+    gradient_accumulation_steps: 16
+    max_seq_length: 1024
+    
+  RTX_3090:
+    max_batch_size: 4
+    gradient_accumulation_steps: 8
+    max_seq_length: 2048
+
+# Network configuration for distributed training
+network:
+  master_addr: "192.168.1.100"  # IP of system_1
+  master_port: 12355
+  backend: "nccl"
+  timeout: 1800  # 30 minutes
+
+# Load balancing
+load_balancing:
+  strategy: "memory_aware"  # Distribute based on available VRAM
+  rebalance_frequency: 1000  # steps

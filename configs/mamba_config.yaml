@@ -1,0 +1,65 @@
+# Mamba Architecture Configuration
+# Version: v1.0.0
+
+# Model configuration
+model:
+  architecture: "mamba"
+  tokenizer_name: "gpt2"
+  vocab_size: 50257
+  d_model: 1024
+  d_state: 16
+  d_conv: 4
+  expand: 2
+  dt_rank: "auto"
+  dt_min: 0.001
+  dt_max: 0.1
+  dt_init: "random"
+  dt_scale: 1.0
+  dt_init_floor: 1e-4
+  conv_bias: true
+  bias: false
+  use_fast_path: true
+  max_seq_length: 2048
+
+# Training configuration
+training:
+  batch_size: 8  # Mamba can handle larger batches
+  gradient_accumulation_steps: 4
+  learning_rate: 2e-4  # Slightly higher for Mamba
+  weight_decay: 0.01
+  warmup_steps: 1000
+  max_steps: 100000
+  max_epochs: 10
+  save_steps: 1000
+  eval_steps: 500
+  logging_steps: 100
+
+# Data configuration
+data:
+  dataset_name: "fineweb"
+  max_samples: 1000000
+  preprocessing_workers: 8
+  cache_dir: "./data/cache"
+
+# Distributed training
+distributed:
+  backend: "nccl"
+  world_size: 4  # 4 GPUs across systems
+  local_rank: 0
+  master_addr: "localhost"
+  master_port: 12356  # Different port from transformer
+
+# Hardware optimization
+optimization:
+  mixed_precision: true
+  gradient_checkpointing: false  # Mamba doesn't need this
+  dataloader_num_workers: 4
+  pin_memory: true
+  compile_model: true  # PyTorch 2.0 compilation
+
+# Mamba-specific settings
+mamba:
+  selective_scan: true
+  parallel_scan: true
+  use_fast_path: true
+  memory_efficient: true
