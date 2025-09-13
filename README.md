@@ -35,9 +35,18 @@ This project implements a multi-stage training pipeline:
 
 ## Quick Start
 
-1. Install dependencies: `pip install -r requirements.txt`
-2. Download and process FineWeb data: `python data/download_fineweb.py`
-3. Start training: `python training/train_transformer.py --config configs/base_config.yaml`
+1. Setup environment: `python setup.py --setup-all`
+2. Activate conda environment: `conda activate LLM`
+3. Download and process data: `python train.py --pipeline data --download-fineweb`
+4. Start training: `python train.py --pipeline complete --architecture transformer`
+
+## Requirements
+
+- **Python**: 3.11
+- **PyTorch**: 2.7.1 with CUDA 12.6 support
+- **TorchVision**: 0.22.1
+- **CUDA**: 11.7+ (automatically detected, optimized for CUDA 12.6)
+- **Hardware**: Multi-GPU setup (RTX 3080 TI + 3x RTX 3090)
 
 ## Version
 

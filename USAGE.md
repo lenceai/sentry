@@ -2,6 +2,14 @@
 
 This guide will help you get started with training your amazing LLM from scratch using your multi-GPU setup.
 
+## Prerequisites
+
+- **Python**: 3.11 (automatically installed via conda)
+- **PyTorch**: 2.7.1 with CUDA 12.6 support (automatically installed)
+- **TorchVision**: 0.22.1 (automatically installed)
+- **CUDA**: 11.7+ (automatically detected, optimized for CUDA 12.6)
+- **Hardware**: Multi-GPU setup with NVIDIA GPUs
+
 ## Quick Start
 
 ### 1. Initial Setup
@@ -10,10 +18,8 @@ This guide will help you get started with training your amazing LLM from scratch
 # Run the complete setup
 python setup.py --setup-all
 
-# Activate virtual environment
-source venv/bin/activate  # Linux/Mac
-# or
-venv\Scripts\activate     # Windows
+# Activate conda environment
+conda activate LLM
 ```
 
 ### 2. Download Training Data
@@ -34,12 +40,15 @@ python train.py --pipeline data --custom-data ./research_papers --domain medical
 ```bash
 # Complete training pipeline (recommended)
 python train.py --pipeline complete --architecture transformer
+# Or use the convenience script: ./train.sh --pipeline complete --architecture transformer
 
 # Or train Mamba architecture
 python train.py --pipeline complete --architecture mamba
+# Or: ./train.sh --pipeline complete --architecture mamba
 
 # With custom medical data
 python train.py --pipeline complete --architecture transformer --custom-data ./research_papers --domain medical
+# Or: ./train.sh --pipeline complete --architecture transformer --custom-data ./research_papers --domain medical
 ```
 
 ## Detailed Usage

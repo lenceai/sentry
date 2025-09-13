@@ -75,7 +75,14 @@ class FineWebProcessor:
         if dataset_name == "fineweb":
             dataset = load_dataset("HuggingFaceFW/fineweb", "sample-10BT", split="train")
         elif dataset_name == "fineweb-edu":
-            dataset = load_dataset("HuggingFaceFW/fineweb", "edu", split="train")
+            # Use SmolLM-Corpus FineWeb-Edu (deduplicated) - much more efficient!
+            dataset = load_dataset("HuggingFaceTB/smollm-corpus", "fineweb-edu-dedup", split="train")
+        elif dataset_name == "cosmopedia":
+            # SmolLM synthetic educational content
+            dataset = load_dataset("HuggingFaceTB/smollm-corpus", "cosmopedia-v2", split="train")
+        elif dataset_name == "python-edu":
+            # SmolLM high-quality Python code
+            dataset = load_dataset("HuggingFaceTB/smollm-corpus", "python-edu", split="train")
         else:
             raise ValueError(f"Unknown dataset: {dataset_name}")
         

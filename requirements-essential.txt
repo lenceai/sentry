@@ -1,21 +1,12 @@
+# Essential dependencies for LLM training (no compilation required)
+# Version: v1.0.0
+
 # Core ML/DL frameworks
-torch==2.7.1
-torchvision==0.22.1
-torchaudio==2.7.1
 transformers>=4.35.0
 accelerate>=0.24.0
-deepspeed>=0.12.0
-bitsandbytes>=0.41.0
-
-# Mamba architecture
-mamba-ssm>=1.2.0
-causal-conv1d>=1.0.0
-
-# Data processing
 datasets>=2.14.0
 tokenizers>=0.15.0
 huggingface-hub>=0.19.0
-webdataset>=0.2.0
 
 # Training utilities
 wandb>=0.16.0
@@ -23,10 +14,6 @@ tensorboard>=2.15.0
 tqdm>=4.66.0
 numpy>=1.24.0
 pandas>=2.0.0
-
-# Distributed training
-mpi4py>=3.1.0
-nccl>=2.18.0
 
 # Evaluation
 evaluate>=0.4.0
@@ -38,3 +25,12 @@ pyyaml>=6.0
 click>=8.1.0
 rich>=13.0.0
 psutil>=5.9.0
+
+# API and deployment
+fastapi>=0.104.0
+uvicorn>=0.24.0
+gradio>=4.0.0
+
+# Additional dependencies for Python 3.11 compatibility
+setuptools>=68.0.0
+wheel>=0.41.0

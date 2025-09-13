@@ -1,0 +1,64 @@
+# FineWeb-Edu Specific Configuration
+# Version: v1.0.0
+# Optimized for educational content training
+
+# Model configuration - Optimized for educational content
+model:
+  architecture: "transformer"
+  vocab_size: 50257
+  d_model: 1024
+  n_heads: 16
+  n_layers: 24
+  d_ff: 4096
+  max_seq_length: 2048  # Good for educational content
+  dropout: 0.1
+
+# Training configuration - Optimized for quality over speed
+training:
+  batch_size: 4  # Per GPU - conservative for quality
+  gradient_accumulation_steps: 8
+  learning_rate: 5e-5  # Lower LR for educational content
+  weight_decay: 0.01
+  warmup_steps: 2000  # More warmup for stable training
+  max_steps: 50000  # Focused training
+  save_steps: 1000
+  eval_steps: 500
+  logging_steps: 100
+  max_epochs: 3
+
+# Data configuration - FineWeb-Edu specific
+data:
+  dataset_name: "fineweb-edu"
+  max_samples: 100000  # Start with reasonable subset
+  preprocessing_workers: 8
+  cache_dir: "./data/cache"
+  min_text_length: 100  # Filter very short texts
+  max_text_length: 8192  # Allow longer educational content
+
+# Distributed training
+distributed:
+  backend: "nccl"
+  world_size: 4  # 4 GPUs across systems
+  local_rank: 0
+  master_addr: "localhost"
+  master_port: 12355
+
+# Hardware optimization - Conservative for stability
+optimization:
+  mixed_precision: true
+  gradient_checkpointing: true
+  dataloader_num_workers: 4
+  pin_memory: true
+  compile_model: false  # Disable for stability
+
+# Paths
+paths:
+  output_dir: "./models/fineweb-edu"
+  data_dir: "./data/fineweb-edu"
+  log_dir: "./logs"
+
+# Educational content specific settings
+educational:
+  focus_quality: true
+  preserve_structure: true
+  enhanced_tokenization: true
