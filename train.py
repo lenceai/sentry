@@ -51,10 +51,23 @@ class AmazingLLMTrainer:
         self.logs_dir.mkdir(exist_ok=True)
     
     def prepare_data(self, download_fineweb: bool = False, download_fineweb_edu: bool = False, 
-                    custom_data_path: Optional[str] = None, domain: str = "medical"):
+                    custom_data_path: Optional[str] = None, domain: str = "medical", use_finepdfs: bool = True,
+                    finepdfs_languages: Optional[List[str]] = None, finepdfs_max_samples: int = 100000):
         """Prepare all training data"""
         logger.info("Starting data preparation...")
         
+        # Default: FinePDFs for base corpus
+        if use_finepdfs:
+            logger.info("Downloading and processing FinePDFs dataset (default)...")
+            cmd = [
+                "python", "scripts/datasets/download_finepdfs.py",
+                "--output_dir", str(self.data_dir / "finepdfs"),
+                "--max_samples", str(finepdfs_max_samples),
+            ]
+            if finepdfs_languages:
+                cmd.extend(["--languages", *finepdfs_languages])
+            subprocess.run(cmd, check=True)
+
         if download_fineweb:
             logger.info("Downloading and processing FineWeb dataset...")
             cmd = [
@@ -197,7 +210,8 @@ class AmazingLLMTrainer:
         
         # Step 1: Data preparation
         self.prepare_data(
-            download_fineweb=True,
+            use_finepdfs=True,
+            download_fineweb=False,
             download_fineweb_edu=True,
             custom_data_path=custom_data_path,
             domain=domain
@@ -205,9 +219,10 @@ class AmazingLLMTrainer:
         
         # Step 2: Base training on FineWeb
         base_output_dir = self.models_dir / f"{architecture}-base"
+        # Train base on FinePDFs by default
         self.train_base_model(
             architecture=architecture,
-            data_path=str(self.data_dir / "fineweb"),
+            data_path=str(self.data_dir / "finepdfs"),
             output_dir=str(base_output_dir)
         )
         

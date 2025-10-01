@@ -25,8 +25,12 @@ conda activate LLM
 ### 2. Download Training Data
 
 ```bash
-# Download FineWeb dataset (base training)
-python train.py --pipeline data --download-fineweb
+# Download FinePDFs dataset (default base training)
+python train.py --pipeline data
+
+# Optional: specify FinePDFs languages and sample count via train.py flags
+# (defaults to eng_Latn and 100k samples)
+python train.py --pipeline data --config configs/base_config.yaml
 
 # Download FineWeb-Edu dataset (educational training)
 python train.py --pipeline data --download-fineweb-edu
@@ -38,7 +42,7 @@ python train.py --pipeline data --custom-data ./research_papers --domain medical
 ### 3. Start Training
 
 ```bash
-# Complete training pipeline (recommended)
+# Complete training pipeline (recommended; uses FinePDFs as base by default)
 python train.py --pipeline complete --architecture transformer
 # Or use the convenience script: ./train.sh --pipeline complete --architecture transformer
 

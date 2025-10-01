@@ -13,7 +13,9 @@ data/
 # Specific data folders that could be large
 data/fineweb/
 data/fineweb-edu/
+data/finepdfs/
 data/smollm-edu/
+data/finepdfs/
 data/cache/
 data/medical/
 data/custom/

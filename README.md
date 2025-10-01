@@ -5,7 +5,7 @@ A comprehensive project for building state-of-the-art Large Language Models from
 ## Project Overview
 
 This project implements a multi-stage training pipeline:
-1. **Base Training**: FineWeb dataset for general language understanding
+1. **Base Training**: FinePDFs dataset for high-quality language understanding ([FinePDFs](https://huggingface.co/datasets/HuggingFaceFW/finepdfs))
 2. **Educational Training**: FineWeb-Edu for enhanced reasoning capabilities  
 3. **Domain Fine-tuning**: Custom datasets for specific use cases (e.g., autoimmune disease research)
 
@@ -37,7 +37,7 @@ This project implements a multi-stage training pipeline:
 
 1. Setup environment: `python setup.py --setup-all`
 2. Activate conda environment: `conda activate LLM`
-3. Download and process data: `python train.py --pipeline data --download-fineweb`
+3. Download and process data (FinePDFs default): `python train.py --pipeline data`
 4. Start training: `python train.py --pipeline complete --architecture transformer`
 
 ## Requirements
