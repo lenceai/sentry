@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """
-Setup Script for Amazing LLM Project
+Setup Script for Sentry Project
 Version: v1.0.0
 
-This script sets up the environment and dependencies for the Amazing LLM project.
-It handles virtual environment creation, dependency installation, and initial configuration.
+This script sets up the environment and dependencies for the Sentry project.
+It handles conda environment creation (named 'sentry'), dependency installation, and initial configuration.
 
 Usage:
     python setup.py --install-deps
-    python setup.py --create-venv
+    python setup.py --create-env
     python setup.py --setup-all
+    
+After setup, activate the environment with:
+    conda activate sentry
 """
 
 import argparse
@@ -24,11 +27,11 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class ProjectSetup:
-    """Setup manager for the Amazing LLM project"""
+    """Setup manager for the Sentry project"""
     
     def __init__(self, force_cuda_version=None):
         self.project_root = Path(__file__).parent
-        self.conda_env_name = "LLM"
+        self.conda_env_name = "sentry"
         self.requirements_file = self.project_root / "requirements.txt"
         self.cuda_version = force_cuda_version if force_cuda_version else self._detect_cuda_version()
     
@@ -229,6 +232,23 @@ class ProjectSetup:
             # Try to install optional CUDA-dependent packages
             cuda_home = self._setup_cuda_environment()
             
+            if not cuda_home:
+                logger.warning("=" * 80)
+                logger.warning("CUDA Toolkit NOT FOUND (only CUDA runtime is available)")
+                logger.warning("DeepSpeed and Mamba-SSM require CUDA development toolkit (nvcc)")
+                logger.warning("")
+                logger.warning("To install CUDA Toolkit 13.0, run:")
+                logger.warning("  sudo apt-get update")
+                logger.warning("  sudo apt-get install cuda-toolkit-13-0")
+                logger.warning("")
+                logger.warning("Then add to your ~/.bashrc:")
+                logger.warning("  export CUDA_HOME=/usr/local/cuda-13.0")
+                logger.warning("  export PATH=$CUDA_HOME/bin:$PATH")
+                logger.warning("  export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH")
+                logger.warning("")
+                logger.warning("After installation, re-run: python setup.py --install-deps")
+                logger.warning("=" * 80)
+            
             # Try to install DeepSpeed
             logger.info("Attempting to install DeepSpeed...")
             if cuda_home:
@@ -317,7 +337,7 @@ class ProjectSetup:
         # Pre-commit hook
         pre_commit_hook = git_hooks_dir / "pre-commit"
         pre_commit_content = """#!/bin/bash
-# Pre-commit hook for Amazing LLM project
+# Pre-commit hook for Sentry project
 
 echo "Running pre-commit checks..."
 
@@ -348,10 +368,10 @@ echo "Pre-commit checks passed!"
         # Training script
         train_script = self.project_root / f"train{script_ext}"
         train_content = f"""@echo off
-REM Amazing LLM Training Launcher
+REM Sentry Training Launcher
 conda run -n {self.conda_env_name} python train.py %*
 """ if os.name == 'nt' else f"""#!/bin/bash
-# Amazing LLM Training Launcher
+# Sentry Training Launcher
 conda run -n {self.conda_env_name} python train.py "$@"
 """
         
@@ -364,10 +384,10 @@ conda run -n {self.conda_env_name} python train.py "$@"
         # Inference script
         inference_script = self.project_root / f"inference{script_ext}"
         inference_content = f"""@echo off
-REM Amazing LLM Inference Launcher
+REM Sentry Inference Launcher
 conda run -n {self.conda_env_name} python deployment/inference.py %*
 """ if os.name == 'nt' else f"""#!/bin/bash
-# Amazing LLM Inference Launcher
+# Sentry Inference Launcher
 conda run -n {self.conda_env_name} python deployment/inference.py "$@"
 """
         
@@ -380,10 +400,10 @@ conda run -n {self.conda_env_name} python deployment/inference.py "$@"
         # Activation helper script
         activate_script = self.project_root / f"activate_env{script_ext}"
         activate_content = f"""@echo off
-REM Activate LLM conda environment
+REM Activate sentry conda environment
 conda activate {self.conda_env_name}
 """ if os.name == 'nt' else f"""#!/bin/bash
-# Activate LLM conda environment
+# Activate sentry conda environment
 echo "Activating conda environment: {self.conda_env_name}"
 echo "Run: conda activate {self.conda_env_name}"
 """
@@ -491,7 +511,7 @@ echo "Run: conda activate {self.conda_env_name}"
             raise
 
 def main():
-    parser = argparse.ArgumentParser(description="Setup Amazing LLM Project")
+    parser = argparse.ArgumentParser(description="Setup Sentry Project")
     parser.add_argument("--create-env", action="store_true", help="Create conda environment")
     parser.add_argument("--install-deps", action="store_true", help="Install dependencies")
     parser.add_argument("--setup-dirs", action="store_true", help="Setup directories")

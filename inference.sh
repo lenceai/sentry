@@ -1,3 +1,3 @@
 #!/bin/bash
-# Amazing LLM Inference Launcher
-conda run -n LLM python deployment/inference.py "$@"
+# Sentry Inference Launcher
+conda run -n sentry python deployment/inference.py "$@"

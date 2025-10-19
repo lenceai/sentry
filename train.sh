@@ -1,3 +1,3 @@
 #!/bin/bash
-# Amazing LLM Training Launcher
-conda run -n LLM python train.py "$@"
+# Sentry Training Launcher
+conda run -n sentry python train.py "$@"

@@ -1,4 +1,4 @@
 #!/bin/bash
-# Activate LLM conda environment
-echo "Activating conda environment: LLM"
-echo "Run: conda activate LLM"
+# Activate sentry conda environment
+echo "Activating conda environment: sentry"
+echo "Run: conda activate sentry"
